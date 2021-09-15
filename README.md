@@ -1,2 +1,15 @@
-# Ftm_Rarity_Web
-Rarity NFT游戏项目
+# umi project
+
+## Getting Started
+
+Install dependencies,
+
+```bash
+$ yarn
+```
+
+Start the dev server,
+
+```bash
+$ yarn start
+```
