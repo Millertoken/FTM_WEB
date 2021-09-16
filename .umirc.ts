@@ -4,8 +4,9 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+
   // layout: {},
-  mfsu: {},
+  mfsu: {}, 
   routes: [
     {
       path: '/',
@@ -18,8 +19,8 @@ export default defineConfig({
     },
   ],
   fastRefresh: {},
-  base: '/docs/',
-  publicPath: '/static/',
+  base: '/',
+  publicPath: '/',
   hash: true,
   history: {
     type: 'hash',

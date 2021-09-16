@@ -17,7 +17,6 @@ const HeroList = () => {
   const { chainId, account, activate, active } = useWeb3React();
 
   useEffect(() => {
-    console.log('useEffect account =' + account);
     if (account) {
       loadList(account);
       checkApprove(account);
@@ -78,13 +77,11 @@ const HeroList = () => {
   };
 
   function LevelUp() {
-    let data = heroList;
-    adventureControl.LevelUp(data);
+    adventureControl.LevelUp(heroList);
   }
 
   function adventure() {
-    let data = heroList;
-    adventureControl.adventure(data);
+    adventureControl.adventure(heroList);
   }
 
   function approveAll() {
@@ -95,7 +92,6 @@ const HeroList = () => {
     padding: '50px 80px',
     background: '#ececec',
   };
-  console.log('render isApprovedAll =' + approved);
 
   return (
     <div style={site_card_wrapper}>
@@ -117,6 +113,15 @@ const HeroList = () => {
                 <Button type="primary" onClick={LevelUp}>
                   一键升级
                 </Button>
+                {/* <Button type="primary" onClick={LevelUp}>
+                  一键副本
+                </Button>
+                <Button type="primary" onClick={LevelUp} style={{backgroundColor: 'red',background:"red",borderColor:"red",borderRadius:4}} >
+                  一键领金币
+                </Button>
+                <Button type="primary" onClick={LevelUp}> 
+                  一键加点
+                </Button> */}
               </Space>
             </div>
           ) : (
@@ -144,7 +149,7 @@ const HeroList = () => {
           </Row>
         </div>
       ) : (
-        <div style={{ width: '100%', height: '100%', textAlign: 'center' }}>
+        <div style={{ width: '100%', height: '800px', textAlign: 'center',display:"flex",justifyContent: 'center', alignItems: 'center', }}>
           <Spin size="large" />
         </div>
       )}

@@ -24,11 +24,10 @@ const Home = () => {
       >
         <AcctountHeader></AcctountHeader>
       </Header>
-      <div style={{ marginTop: 64 }}></div>
+      <div style={{ marginTop: 60 }}></div>
       <Content className="site-layout" style={{ height: '100%' }}>
-        {/* <HeroCreate></HeroList> */}
         <Switch>
-          {/* <Route path="/" component={HeroList} exact /> */}
+          <Route path="/" component={HeroList} exact />
           <Route path="/home/MainPage" component={MainPage} exact />
           <Route path="/home/HeroList" component={HeroList} exact />
           <Route path="/home/HeroCreate" component={HeroCreate} exact />

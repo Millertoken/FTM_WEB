@@ -64,7 +64,7 @@ class BatterCard extends Component {
     return (
       <div>
         <Card style={{ textAlign: 'center' }}>
-          <Space direction="vertical" size={4} style={{ width: '100%' }}>
+          <Space direction="vertical" size={8} style={{ width: '100%' }}>
             <img src={img} width="100px" height="140px" />
             <p>{getClassesName(dataBean[2])}</p>
             <div
@@ -101,7 +101,7 @@ class BatterCard extends Component {
             <p
               id={'showtime' + this.props.bean.id}
               style={{ color: '#e36d11' }}
-            ></p>
+            >00h:00m:00s</p>
           </Space>
         </Card>
       </div>

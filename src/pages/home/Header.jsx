@@ -59,7 +59,7 @@ const Acctount = (props) => {
   return (
     <div>
       {!isConnected ? (
-        <Button onClick={onClick}>Disconnect</Button>
+        <Button onClick={onClick}>连接MetaMask</Button>
       ) : (
         <Button type="primary">{getEllipsisString(account)}</Button>
       )}
@@ -88,7 +88,7 @@ const Header = (props) => {
               color: 'white',
             }}
           >
-            Rarity Manifested
+            Rarity Zone
           </span>
         </Space>
         <div
@@ -98,20 +98,23 @@ const Header = (props) => {
             <Menu
               theme="dark"
               mode="horizontal"
+              defaultSelectedKeys={["list"]}
+              defaultOpenKeys={['list']}
               style={{ marginBottom: 0, height: 60 }}
             >
-              <Menu.Item key={1}>
+              <Menu.Item key="main">
                 {' '}
                 <NavLink to="/home/MainPage">首页</NavLink>
               </Menu.Item>
-              <Menu.Item key={2}>
+              <Menu.Item key="create">
                 {' '}
                 <NavLink to="/home/HeroCreate">创建</NavLink>
               </Menu.Item>
-              <Menu.Item key={3}>
+              <Menu.Item key="list">
                 <NavLink to="/home/HeroList">战斗</NavLink>
               </Menu.Item>
             </Menu>
+            <div style={{width:10}}></div>
             <Acctount></Acctount>
           </Space>
         </div>

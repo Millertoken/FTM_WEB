@@ -2,7 +2,7 @@
 import { createHashHistory, History } from '/Users/qingyunxiaofan/Documents/work/coin/rarity_web/node_modules/umi/node_modules/@umijs/runtime';
 
 let options = {
-  "basename": "/docs/"
+  "basename": "/"
 };
 if ((<any>window).routerBase) {
   options.basename = (<any>window).routerBase;

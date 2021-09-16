@@ -8,10 +8,6 @@ const site_card_wrapper = {
 
 class HeroCreate extends Component {
 
-    componentDidMount(){
-        console.log(" HeroCreate componentDidMount")
-    }
-
     render() {
         let list = [
             {

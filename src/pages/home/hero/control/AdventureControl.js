@@ -16,7 +16,6 @@ AdventureControl.prototype.adventure = (list) => {
         let exp = item.info[0]
         var currentTime = new Date().getTime()
         let expresult = (toEth(exp.toString())).toString();
-        console.log(item.id + " , expresult = " + expresult + " , currentTime =" + currentTime + " , time =" + time)
         if (currentTime > time * 1000 && (1000 > expresult)) {
             // console.log(item.id + " , is can adventure")
             _ids.push(item.id)
