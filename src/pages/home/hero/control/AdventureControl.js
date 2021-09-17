@@ -1,7 +1,5 @@
-import { adventureTime, getAllSummoner, level_up ,isApprovedAll,setApproval} from '@/constract/Adventure';
-import { toEth } from '@/utils/util';
-
-let MAX_SIZE = 30
+import { adventureTime, getAllSummoner, level_up ,isMultiApprove,setMultiApprove,claimGold} from '@/constract/Adventure';
+import {isApprovedForAll  , setApprovalForAll} from '@/constract/Rarity.js';
 
 function AdventureControl() {
 
@@ -14,9 +12,9 @@ AdventureControl.prototype.adventure = (list) => {
     list.map(item => {
         let time = item.info[1]
         let exp = item.info[0]
+        let exp_request = item.info[4]
         var currentTime = new Date().getTime()
-        let expresult = (toEth(exp.toString())).toString();
-        if (currentTime > time * 1000 && (1000 > expresult)) {
+        if (currentTime > time * 1000 && (exp_request > exp)) {
             // console.log(item.id + " , is can adventure")
             _ids.push(item.id)
         }
@@ -26,13 +24,22 @@ AdventureControl.prototype.adventure = (list) => {
     adventureTime(_ids)
 }
 
-AdventureControl.prototype.checkApprovedAll = async (owner) => {
-    return await isApprovedAll(owner)
+AdventureControl.prototype.isMultiApproved = async (ids) => {
+    return await isMultiApprove(ids)
 }
 
-AdventureControl.prototype.setApproval = async (approve) => {
-    return await setApproval(approve)
+AdventureControl.prototype.setMultiApproval = async (ids) => {
+    return await setMultiApprove(ids)
 }
+
+AdventureControl.prototype.isApprovedForAll = async (account) => {
+    return await isApprovedForAll(account)
+}
+AdventureControl.prototype.setApprovalForAll = async (approved) => {
+    return await setApprovalForAll(approved)
+}
+
+
 
 AdventureControl.prototype.getAll = async (originList) => {
     let ids = []
@@ -56,13 +63,28 @@ AdventureControl.prototype.LevelUp = (list) => {
     let _ids = []
     list.map(item => {
         let exp = item.info[0]
-        if (1000 == (toEth(exp.toString())).toString()) {
+        let exp_request = item.info[4]
+        if (exp_request == exp) {
             // console.log(item.id +" , is can adventure")
             _ids.push(item.id)
         }
     })
     console.log(_ids.length + " heros, is can levup")
     level_up(_ids)
+}
+
+AdventureControl.prototype.getGlod = async (list,callback) => {
+    let ids = []
+    try {
+        list.map(item => {
+            ids.push(item.id)
+        })
+    } catch (e) {
+        console.log("error, getGlod list =" + list)
+    } 
+    // var b = ids.splice(ids.length-2);
+    let result = await claimGold(ids,callback)
+    return result;
 }
 
 // export.default = AdventureControl

@@ -23,16 +23,16 @@ class BatterCard extends Component {
       .replace(/:\d{1,2}$/, ' ');
   }
 
-  async loadData(tokenId) {
-    await summonerInfo(tokenId)
-      .then((response) => {
-        // console.log("summonerInfo tokenId = "+tokenId+ " , response = "+ response[1].toString())
-        this.setState({ loading: false, dataBean: response });
-      })
-      .catch((error) => {
-        console.log('summonerInfo error =' + error);
-      });
-  }
+  // async loadData(tokenId) {
+  //   await summonerInfo(tokenId)
+  //     .then((response) => {
+  //       // console.log("summonerInfo tokenId = "+tokenId+ " , response = "+ response[1].toString())
+  //       this.setState({ loading: false, dataBean: response });
+  //     })
+  //     .catch((error) => {
+  //       console.log('summonerInfo error =' + error);
+  //     });
+  // }
 
   showtime(endtime) {
     var nowtime = new Date(); //获取当前时间
@@ -95,7 +95,17 @@ class BatterCard extends Component {
               }}
             >
               <p>经验值:</p>
-              <p>{toEth(dataBean[0].toString()).toString()}/1000</p>
+              <p>{toEth(dataBean[0].toString()).toString()}/{toEth(dataBean[4].toString()).toString()}</p>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                justifyContent: 'space-between',
+              }}
+            >
+              <p>金币:</p>
+              <p style={{color: "#e8ac10"}}>{toEth(dataBean[5].toString()).toString()}</p>
             </div>
             <p>下一次冒险时刻</p>
             <p

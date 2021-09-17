@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { createHashHistory, History } from '/Users/qingyunxiaofan/Documents/work/coin/rarity_web/node_modules/umi/node_modules/@umijs/runtime';
+import { createHashHistory, History } from '/Users/qingyunxiaofan/Documents/work/coin/rarity_project/rarity_web/node_modules/umi/node_modules/@umijs/runtime';
 
 let options = {
   "basename": "/"

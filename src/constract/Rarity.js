@@ -1,5 +1,7 @@
+import {MultiApproveContractAddress} from '@/constract/MultiApprove.js';
 const { Contract, ethers } = require('ethers');
 const abi = require('@/abi/Rarity.json')
+
 const contractAddress = '0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb';  //合约地址
 let signer 
 let contract
@@ -20,14 +22,14 @@ export const summonerInfo = async(_summoner) => {
     // return result;
 }
 
-export const isApprovedForAll = async (owner,operator) => {
+export const isApprovedForAll = async (owner) => {
     const daiWithSigner = contract.connect(signer);  
-    return await daiWithSigner.isApprovedForAll(owner,operator);
+    return await daiWithSigner.isApprovedForAll(owner,MultiApproveContractAddress);
 }
 
-export const setApprovalForAll = async (operator,approved) => {
+export const setApprovalForAll = async (approved) => {
     const daiWithSigner = contract.connect(signer);  
-    return await daiWithSigner.setApprovalForAll(operator,approved);
+    return await daiWithSigner.setApprovalForAll(MultiApproveContractAddress,approved);
 }
 
 

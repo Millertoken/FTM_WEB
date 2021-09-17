@@ -1,7 +1,7 @@
-import { isApprovedForAll,setApprovalForAll } from '@/constract/Rarity.js';
+import { isMultiApproved, setMultiApproval } from '@/constract/MultiApprove.js';
 const { Contract, ethers } = require('ethers');
-const abi = require('@/abi/Adventure.json')
-const contractAddress = '0xEf73F99d54dB6207E532e7262A7186e3d79b3539';  //合约地址
+const abi = require('@/abi/MultiAdventure.json')
+const contractAddress = '0x3e4A4b6Cb1034a22943D0eE6D4906C62d550A439';  //合约地址
 let signer
 let contract
 if (window.ethereum) {
@@ -26,10 +26,20 @@ export const level_up = (_ids) => {
     daiWithSigner.level_up(_ids);
 }
 
-export const isApprovedAll = async (owner) => {
-    return await isApprovedForAll(owner, contractAddress);
+export const isMultiApprove = async (ids) => {
+    return await isMultiApproved(ids);
 }
 
-export const setApproval = async (approve) => {
-    return await setApprovalForAll(contractAddress, approve);
+export const setMultiApprove = async (ids) => {
+    return await setMultiApproval(ids);
+}
+
+export const claimGold = (_ids,callback) => {
+    const daiWithSigner = contract.connect(signer);
+    daiWithSigner.claimGold(_ids).then((result) => {
+        console.log("claimGold result= "+result);
+        callback()
+    }).catch((error) => {
+        console.log("claimGold error= "+JSON.stringify(error));
+    });
 }

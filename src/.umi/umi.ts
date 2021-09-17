@@ -4,15 +4,15 @@ import '@@/core/devScripts';
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
 import { createHistory } from './core/history';
-import { ApplyPluginsType } from '/Users/qingyunxiaofan/Documents/work/coin/rarity_web/node_modules/umi/node_modules/@umijs/runtime';
-import { renderClient } from '/Users/qingyunxiaofan/Documents/work/coin/rarity_web/node_modules/@umijs/renderer-react';
+import { ApplyPluginsType } from '/Users/qingyunxiaofan/Documents/work/coin/rarity_project/rarity_web/node_modules/umi/node_modules/@umijs/runtime';
+import { renderClient } from '/Users/qingyunxiaofan/Documents/work/coin/rarity_project/rarity_web/node_modules/@umijs/renderer-react';
 import { getRoutes } from './core/routes';
 
 
 
 (() => {
   // Runtime block add component
-  window.GUmiUIFlag = require('/Users/qingyunxiaofan/Documents/work/coin/rarity_web/node_modules/@umijs/plugin-ui-blocks/lib/sdk/flagBabelPlugin/GUmiUIFlag.js').default;
+  window.GUmiUIFlag = require('/Users/qingyunxiaofan/Documents/work/coin/rarity_project/rarity_web/node_modules/@umijs/plugin-ui-blocks/lib/sdk/flagBabelPlugin/GUmiUIFlag.js').default;
 
   // Enable/Disable block add edit mode
   window.addEventListener(
@@ -83,9 +83,9 @@ export default clientRender();
         if (isIE) return;
 
         // Umi UI Bubble
-        require('/Users/qingyunxiaofan/Documents/work/coin/rarity_web/node_modules/@umijs/preset-ui/lib/bubble').default({
+        require('/Users/qingyunxiaofan/Documents/work/coin/rarity_project/rarity_web/node_modules/@umijs/preset-ui/lib/bubble').default({
           port: 3000,
-          path: '/Users/qingyunxiaofan/Documents/work/coin/rarity_web',
+          path: '/Users/qingyunxiaofan/Documents/work/coin/rarity_project/rarity_web',
           currentProject: '',
           isBigfish: undefined,
         });
