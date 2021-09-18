@@ -1,6 +1,6 @@
 const { Contract, ethers } = require('ethers');
 const abi = require('@/abi/MultiApprove.json')
-const contractAddress = '0xa1abb7CF6508Dcbf426d5f087C63772491b68919';  //合约地址
+const contractAddress = '0x83a4582935F601ce0f63C455045B9DC07e530A30';  //合约地址
 let signer 
 let contract
 if (window.ethereum) {
@@ -12,6 +12,12 @@ if (window.ethereum) {
 export const isMultiApproved = async (ids) => {
     const daiWithSigner = contract.connect(signer);  
     return await daiWithSigner.isMultiApproved(ids);
+}
+
+export const checkMultiApproved = async (ids) => {
+    const daiWithSigner = contract.connect(signer);  
+    let result = await daiWithSigner.checkMultiApproved(ids);
+    return result;
 }
 
 export const setMultiApproval = async (ids) => {

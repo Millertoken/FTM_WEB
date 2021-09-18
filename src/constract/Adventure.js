@@ -1,4 +1,4 @@
-import { isMultiApproved, setMultiApproval } from '@/constract/MultiApprove.js';
+import { isMultiApproved, setMultiApproval ,checkMultiApproved} from '@/constract/MultiApprove.js';
 const { Contract, ethers } = require('ethers');
 const abi = require('@/abi/MultiAdventure.json')
 const contractAddress = '0x3e4A4b6Cb1034a22943D0eE6D4906C62d550A439';  //合约地址
@@ -30,15 +30,19 @@ export const isMultiApprove = async (ids) => {
     return await isMultiApproved(ids);
 }
 
+export const checkMultiApprove = async (ids) => {
+    return await checkMultiApproved(ids);
+}
+
 export const setMultiApprove = async (ids) => {
     return await setMultiApproval(ids);
 }
 
-export const claimGold = (_ids,callback) => {
+export const claimGold = (_ids) => {
     const daiWithSigner = contract.connect(signer);
     daiWithSigner.claimGold(_ids).then((result) => {
         console.log("claimGold result= "+result);
-        callback()
+        // callback()
     }).catch((error) => {
         console.log("claimGold error= "+JSON.stringify(error));
     });

@@ -1,37 +1,56 @@
-import { adventureTime, getAllSummoner, level_up ,isMultiApprove,setMultiApprove,claimGold} from '@/constract/Adventure';
-import {isApprovedForAll  , setApprovalForAll} from '@/constract/Rarity.js';
-import BigNumber from 'bignumber.js' 
-import {toEth} from '@/utils/util';
+import { adventureTime, getAllSummoner, level_up, isMultiApprove, setMultiApprove, claimGold,checkMultiApprove } from '@/constract/Adventure';
+import { isApprovedForAll, setApprovalForAll } from '@/constract/Rarity.js';
+import BigNumber from 'bignumber.js'
+import { toEth } from '@/utils/util';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {checkMultiClaim} from '@/constract/Gold';
+import { Modal } from 'antd';
+const { confirm } = Modal;
+
 function AdventureControl() {
 
 }
 
-AdventureControl.prototype.adventure = (list) => {
-    ///超过MAX_SIZE的不处理
-    let _ids = []
-    console.log(list.length + " heros, is do adventure")
-    list.map(item => {
-        let time = item.info[1]
-        let exp = toEth(item.info[0].toString())
-        let exp_request = toEth(item.info[4].toString())
-        var currentTime = new Date().getTime()
-        if (currentTime > time*1000 && (BigNumber(exp_request).comparedTo(exp))) {
-            _ids.push(item.id)
-        }else{
-            console.log( "adventure time = " + time ++, ",exp_request = " + exp_request +" , exp="+exp)
-        }
+function showConfirm(content,callback) {
+    confirm({
+        title: '提示',
+        icon: <ExclamationCircleOutlined />,
+        content: (
+            <div>
+                <p>当前可操作的NFT:</p>
+                <p>{content}</p>
+            </div>
+        ),
+        onOk() {
+            // console.log('OK');
+            callback()
+        },
+        onCancel() {
+            // console.log('Cancel');
+        },
+    });
+}
+
+AdventureControl.prototype.adventure = function(list){
+    let _ids = this.getCanAdventureIds(list);
+    showConfirm(_ids.toString(),()=>{
+        adventureTime(_ids)
     })
-    // var b = _ids.splice(2); 
-    console.log(_ids.length + " heros, is can adventure")
-    adventureTime(_ids)
 }
 
 AdventureControl.prototype.isMultiApproved = async (ids) => {
     return await isMultiApprove(ids)
 }
 
+AdventureControl.prototype.checkMultiApproved = async (ids) => {
+    return await checkMultiApprove(ids)
+}
+
+
 AdventureControl.prototype.setMultiApproval = async (ids) => {
-    return await setMultiApprove(ids)
+    showConfirm(ids.toString(),()=>{
+        setMultiApprove(ids)
+    })
 }
 
 AdventureControl.prototype.isApprovedForAll = async (account) => {
@@ -39,6 +58,9 @@ AdventureControl.prototype.isApprovedForAll = async (account) => {
 }
 AdventureControl.prototype.setApprovalForAll = async (approved) => {
     return await setApprovalForAll(approved)
+}
+AdventureControl.prototype.checkMultiClaim = async (ids) => {
+    return await checkMultiClaim(ids)
 }
 
 
@@ -57,37 +79,49 @@ AdventureControl.prototype.getAll = async (originList) => {
     // console.log("getAll result ="+result)
 }
 
-AdventureControl.prototype.LevelUp = (list) => {
-    ///超过MAX_SIZE的不处理
-    // if (list.length > MAX_SIZE) {
+AdventureControl.prototype.LevelUp = function(list){
+    let _ids = this.getCanLevelUpIds(list)
+    showConfirm(_ids.toString(),()=>{
+        level_up(_ids)
+    })
+}
 
-    // }
+AdventureControl.prototype.getGlod = async (ids) => {
+    showConfirm(ids.toString(),()=>{
+        claimGold(ids)
+    })
+}
+
+AdventureControl.prototype.getCanAdventureIds= (list) => {
+    let _ids = []
+    list.map(item => {
+        let time = item.info[1]
+        let exp = toEth(item.info[0].toString())
+        let exp_request = toEth(item.info[4].toString())
+        var currentTime = new Date().getTime()
+        if (currentTime > time * 1000 && (BigNumber(exp_request).comparedTo(exp))) {
+            _ids.push(item.id)
+        } else {
+            // console.log("adventure time = " + time++, ",exp_request = " + exp_request + " , exp=" + exp)
+        }
+    })
+    return _ids;
+}
+
+AdventureControl.prototype.getCanLevelUpIds = (list) => {
     let _ids = []
     list.map(item => {
         let exp = item.info[0]
         let exp_request = item.info[4]
+        //  console.log("exp =" + exp + " ,exp_request =" +exp_request)
         if (exp_request == exp) {
             // console.log(item.id +" , is can adventure")
             _ids.push(item.id)
         }
     })
-    console.log(_ids.length + " heros, is can levup")
-    level_up(_ids)
+    return _ids
 }
 
-AdventureControl.prototype.getGlod = async (list,callback) => {
-    let ids = []
-    try {
-        list.map(item => {
-            ids.push(item.id)
-        })
-    } catch (e) {
-        console.log("error, getGlod list =" + list)
-    } 
-    // var b = ids.splice(ids.length-2);
-    let result = await claimGold(ids,callback)
-    return result;
-}
 
 // export.default = AdventureControl
 export default AdventureControl

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import BatterCard from './view/BatterCard';
 import { Space, Col, Spin, Row } from 'antd';
-import { connect } from 'react-redux';
 import { message, Button } from 'antd';
-import { REQUEST_HEROLIST, METAMASK_REFRESH } from '@/redux/Type';
 import AdventureControl from './control/AdventureControl';
 import { useWeb3React } from '@web3-react/core';
 import { useState, useEffect } from 'react';
@@ -12,7 +10,8 @@ const adventureControl = new AdventureControl();
 
 const HeroList = () => {
   const [heroList, setHeroList] = useState(null);
-  const [multiApproved, setMultiApproved] = useState(false);///授权NFT给Approve合约
+  const [notApprovedList, setNotApprovedList] = useState([]);///授权NFT给Approve合约
+  const [checkGoldList, setCheckGoldList] = useState([]);///授权NFT给Approve合约
   const [allApproved, setAllApproved] = useState(false);///调用Approve合约授权NFT给冒险合约，都是因为金币的合约isApporove判断傻逼,没有用allApprove来判断
   const { chainId, account, activate, active } = useWeb3React();
 
@@ -21,6 +20,7 @@ const HeroList = () => {
       loadList(account);
     }
   }, [account]);
+
 
   function loadList(address) {
     let url =
@@ -61,10 +61,15 @@ const HeroList = () => {
 
   function checkApprove(ids) {
     adventureControl
-      .isMultiApproved(ids)
+      .checkMultiApproved(ids)
       .then((result) => {
-        console.log("isMultiApproved result=" + result)
-        setMultiApproved(result);
+        let notApprovedList = [];
+        result.map((item) => {
+          if (item[1] != true) {
+            notApprovedList.push(item);
+          }
+        })
+        setNotApprovedList(notApprovedList);
       })
       .catch((e) => {
         console.log("isMultiApproved e=" + e)
@@ -74,12 +79,20 @@ const HeroList = () => {
     adventureControl
       .isApprovedForAll(account)
       .then((result) => {
-        console.log("isApprovedForAll result=" + result)
         setAllApproved(result);
       })
       .catch((e) => {
         console.log("isApprovedForAll e=" + e)
         errorToast('Approved状态确认失败');
+      });
+
+    adventureControl
+      .checkMultiClaim(ids)
+      .then((result) => {
+        setCheckGoldList(result);
+      })
+      .catch((e) => {
+        console.log("isApprovedForAll e=" + e)
       });
   }
 
@@ -96,9 +109,13 @@ const HeroList = () => {
   }
 
   function claimGold() {
-    adventureControl.getGlod(heroList,()=>{
-      console.log("claimGold success")
-    });
+    let ids = []
+    checkGoldList.map((item) => {
+      if (item[1]) {
+        ids.push(item[0])
+      }
+    })
+    adventureControl.getGlod(ids);
   }
 
   function approveAll() {
@@ -107,8 +124,9 @@ const HeroList = () => {
 
   function setMultiApproval() {
     let ids = [];
-    heroList.map((item) => {
-      ids.push(item.id);
+    console.log("notApprovedList.length =" + notApprovedList.length)
+    notApprovedList.map((item) => {
+      ids.push(item[0]);
     });
     adventureControl.setMultiApproval(ids);
   }
@@ -132,7 +150,9 @@ const HeroList = () => {
       {heroList ? (
         <div>
           <h3 style={{ textAlign: 'center' }}>英雄数量:{heroList.length}</h3>
-          <h5 style={{ textAlign: 'center' ,padding: '10px',}}>首次使用或者更新之后需要重新授权</h5>
+          <h5 style={{ textAlign: 'center', padding: '10px', }}>首次使用或者更新之后需要重新授权,授权之后才能执行其他操作</h5>
+          <h5 style={{ textAlign: 'center', padding: '10px', }}>小狐狸返回成功之后,请刷新界面</h5>
+          <h5 style={{ textAlign: 'center', padding: '10px', }}>建议用小号操作,有任何疑问可以联系开发QQ:2468420514</h5>
           <div style={{
             width: '100%',
             textAlign: 'center',
@@ -142,13 +162,13 @@ const HeroList = () => {
               <Button type="primary" onClick={approveAll} danger={!allApproved}>
                 授权批量合约1
                 {
-                  allApproved?"(已授权)":"(未授权)"
+                  allApproved ? "(已授权)" : "(未授权)"
                 }
               </Button>
-              <Button type="primary" onClick={setMultiApproval} danger={!multiApproved}>
+              <Button type="primary" onClick={setMultiApproval} danger={!(notApprovedList.length == 0)}>
                 授权批量合约2
                 {
-                  multiApproved?"(已授权)":"(未授权)"
+                  (notApprovedList.length == 0) ? "(已授权)" : "(" + notApprovedList.length + "个未授权)"
                 }
               </Button>
             </Space>
@@ -162,16 +182,26 @@ const HeroList = () => {
           >
             <Space>
               <Button type="primary" onClick={adventure}>
-                一键冒险
+                一键冒险({adventureControl.getCanAdventureIds(heroList).length})
               </Button>
               <Button type="primary" onClick={LevelUp}>
-                一键升级
+                一键升级({adventureControl.getCanLevelUpIds(heroList).length})
               </Button>
               <Button type="primary" onClick={fuben} disabled>
                 一键副本
               </Button>
               <Button type="primary" onClick={claimGold} style={{ backgroundColor: '#e8ac10', background: "#e8ac10", borderColor: "#e8ac10", borderRadius: 4 }} >
-                一键领金币
+                一键领金币({
+                  function () {
+                    let list = []
+                    checkGoldList.map((item) => {
+                      if (item[1]) {
+                        list.push(item)
+                      }
+                    })
+                    return list.length
+                  }()
+                })
               </Button>
               <Button type="primary" onClick={pointAdd} disabled>
                 一键加点
