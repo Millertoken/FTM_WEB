@@ -1,6 +1,7 @@
 import { adventureTime, getAllSummoner, level_up ,isMultiApprove,setMultiApprove,claimGold} from '@/constract/Adventure';
 import {isApprovedForAll  , setApprovalForAll} from '@/constract/Rarity.js';
-
+import BigNumber from 'bignumber.js' 
+import {toEth} from '@/utils/util';
 function AdventureControl() {
 
 }
@@ -11,12 +12,13 @@ AdventureControl.prototype.adventure = (list) => {
     console.log(list.length + " heros, is do adventure")
     list.map(item => {
         let time = item.info[1]
-        let exp = item.info[0]
-        let exp_request = item.info[4]
+        let exp = toEth(item.info[0].toString())
+        let exp_request = toEth(item.info[4].toString())
         var currentTime = new Date().getTime()
-        if (currentTime > time * 1000 && (exp_request > exp)) {
-            // console.log(item.id + " , is can adventure")
+        if (currentTime > time*1000 && (BigNumber(exp_request).comparedTo(exp))) {
             _ids.push(item.id)
+        }else{
+            console.log( "adventure time = " + time ++, ",exp_request = " + exp_request +" , exp="+exp)
         }
     })
     // var b = _ids.splice(2); 
