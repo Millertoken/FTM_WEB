@@ -69,6 +69,7 @@ const HeroList = () => {
             notApprovedList.push(item);
           }
         })
+        // console.log("notApprovedList.length = " + notApprovedList.length);
         setNotApprovedList(notApprovedList);
       })
       .catch((e) => {
@@ -79,6 +80,7 @@ const HeroList = () => {
     adventureControl
       .isApprovedForAll(account)
       .then((result) => {
+        console.log("isApprovedForAll result=" + result)
         setAllApproved(result);
       })
       .catch((e) => {
@@ -92,7 +94,7 @@ const HeroList = () => {
         setCheckGoldList(result);
       })
       .catch((e) => {
-        console.log("isApprovedForAll e=" + e)
+        console.log("checkMultiClaim e=" + e)
       });
   }
 
@@ -152,6 +154,7 @@ const HeroList = () => {
           <h3 style={{ textAlign: 'center' }}>英雄数量:{heroList.length}</h3>
           <h5 style={{ textAlign: 'center', padding: '10px', }}>首次使用或者更新之后需要重新授权,授权之后才能执行其他操作</h5>
           <h5 style={{ textAlign: 'center', padding: '10px', }}>小狐狸返回成功之后,请刷新界面</h5>
+          <h5 style={{ textAlign: 'center', padding: '10px', }}>领金币的合约,1级能领的金币为0,建议升级之后再领</h5>
           <h5 style={{ textAlign: 'center', padding: '10px', }}>建议用小号操作,有任何疑问可以联系开发QQ:2468420514</h5>
           <div style={{
             width: '100%',

@@ -40,6 +40,7 @@ export const setMultiApprove = async (ids) => {
 
 export const claimGold = (_ids) => {
     const daiWithSigner = contract.connect(signer);
+    // console.log("claimGold ids = " + _ids);
     daiWithSigner.claimGold(_ids).then((result) => {
         console.log("claimGold result= "+result);
         // callback()

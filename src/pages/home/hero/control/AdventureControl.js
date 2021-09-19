@@ -113,9 +113,7 @@ AdventureControl.prototype.getCanLevelUpIds = (list) => {
     list.map(item => {
         let exp = item.info[0]
         let exp_request = item.info[4]
-        //  console.log("exp =" + exp + " ,exp_request =" +exp_request)
-        if (exp_request == exp) {
-            // console.log(item.id +" , is can adventure")
+        if (exp_request.toString() == exp.toString()) {
             _ids.push(item.id)
         }
     })

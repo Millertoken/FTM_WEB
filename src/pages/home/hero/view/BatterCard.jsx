@@ -60,6 +60,7 @@ class BatterCard extends Component {
 
   render() {
     var dataBean = this.props.bean.info;
+    // console.log("getClassesName(dataBean[2])="+getClassesName(dataBean[2]));
     var img = require('@/res/images/' + getClassesName(dataBean[2]) + '.png');
     return (
       <div>
