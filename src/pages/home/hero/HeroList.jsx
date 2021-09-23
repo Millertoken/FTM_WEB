@@ -25,7 +25,7 @@ const HeroList = () => {
   function loadList(address) {
     let url =
       'https://api.ftmscan.com/api?module=account&action=tokennfttx&contractaddress=0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb&address=' +
-      address +
+      account +
       '&apikey=127EZ5EH4QDR1MYWGEHSFTUF3CV6SIRCFN';
     fetch(url, {
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -48,33 +48,50 @@ const HeroList = () => {
   }
 
   async function loadInfo(data) {
-    let array = await adventureControl.getAll(data.result);
-    let list = [];
-    data.result.map((item, index) => {
-      list.push({
-        id: item.tokenID,
-        info: array[index],
+    try {
+      let array = await adventureControl.getAll(data.result);
+      let list = [];
+      data.result.map((item, index) => {
+        list.push({
+          id: item.tokenID,
+          info: array[index],
+        });
       });
-    });
-    setHeroList(list);
+      setHeroList(list);
+    }catch(e){
+      message.error("数据加载失败,请刷新界面", 3);
+    }
+  }
+
+
+  function isApprovedReady() {
+    let result = notApprovedList.length == 0 && allApproved
+    console.log("isApprovedReady result=" + result)
+    if (!result) {
+      message.error("请先完成授权,如果已经完成，请刷新界面", 5);
+    }
+    return result;
   }
 
   function checkApprove(ids) {
     adventureControl
       .checkMultiApproved(ids)
       .then((result) => {
-        let notApprovedList = [];
+        // let notApprovedList = [];
+        let list = [];
         result.map((item) => {
           if (item[1] != true) {
-            notApprovedList.push(item);
+            list.push(item);
           }
         })
         // console.log("notApprovedList.length = " + notApprovedList.length);
-        setNotApprovedList(notApprovedList);
+        setNotApprovedList(list);
       })
       .catch((e) => {
-        console.log("isMultiApproved e=" + e)
-        errorToast('Approved状态确认失败');
+        // console.log("isMultiApproved e=" + e)
+        let list =[-1]
+        console.log("list.length = " + list.length);
+        setNotApprovedList(list)
       });
 
     adventureControl
@@ -85,7 +102,6 @@ const HeroList = () => {
       })
       .catch((e) => {
         console.log("isApprovedForAll e=" + e)
-        errorToast('Approved状态确认失败');
       });
 
     adventureControl
@@ -103,14 +119,21 @@ const HeroList = () => {
   };
 
   function LevelUp() {
-    adventureControl.LevelUp(heroList);
+    if (isApprovedReady()) {
+      adventureControl.LevelUp(heroList);
+    }
   }
 
   function adventure() {
-    adventureControl.adventure(heroList);
+    if (isApprovedReady()) {
+      adventureControl.adventure(heroList);
+    }
   }
 
   function claimGold() {
+    if (!isApprovedReady()) {
+      return
+    }
     let ids = []
     checkGoldList.map((item) => {
       if (item[1]) {
@@ -171,7 +194,7 @@ const HeroList = () => {
               <Button type="primary" onClick={setMultiApproval} danger={!(notApprovedList.length == 0)}>
                 授权批量合约2
                 {
-                  (notApprovedList.length == 0) ? "(已授权)" : "(" + notApprovedList.length + "个未授权)"
+                  (notApprovedList.length == 0 && notApprovedList[0] != -1) ? "(已授权)" : "(" + notApprovedList.length + "个未授权)"
                 }
               </Button>
             </Space>

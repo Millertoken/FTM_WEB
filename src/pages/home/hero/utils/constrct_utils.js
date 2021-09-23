@@ -1,31 +1,34 @@
 
-export const getClassesName = id=>{
-    if (id == 1) {
+export const getClassesName = (bean, level) => {
+    if (level == 1) {
         return "Barbarian";
-    } else if (id == 2) {
+    } else if (level == 2) {
         return "Bard";
-    } else if (id == 3) {
+    } else if (level == 3) {
         return "Cleric";
-    } else if (id == 4) {
+    } else if (level == 4) {
         return "Druid";
-    } else if (id == 5) {
+    } else if (level == 5) {
         return "Fighter";
-    } else if (id == 6) {
+    } else if (level == 6) {
         return "Monk";
-    } else if (id == 7) {
+    } else if (level == 7) {
         return "Paladin";
-    } else if (id == 8) {
+    } else if (level == 8) {
         return "Ranger";
-    } else if (id == 9) {
+    } else if (level == 9) {
         return "Rogue";
-    } else if (id == 10) {
+    } else if (level == 10) {
         return "Sorcerer";
-    } else if (id == 11) {
+    } else if (level == 11) {
+        return "Wizard";
+    } else {
+        console.log("getClassesName error bean =" + JSON.stringify(bean) );
         return "Wizard";
     }
 }
 
-export const getExp= exp=>{
+export const getExp = exp => {
 
 }
 

@@ -61,13 +61,13 @@ class BatterCard extends Component {
   render() {
     var dataBean = this.props.bean.info;
     // console.log("getClassesName(dataBean[2])="+getClassesName(dataBean[2]));
-    var img = require('@/res/images/' + getClassesName(dataBean[2]) + '.png');
+    var img = require('@/res/images/' + getClassesName(this.props.bean,dataBean[2]) + '.png');
     return (
       <div>
         <Card style={{ textAlign: 'center' }}>
           <Space direction="vertical" size={8} style={{ width: '100%' }}>
             <img src={img} width="100px" height="140px" />
-            <p>{getClassesName(dataBean[2])}</p>
+            <p>{getClassesName(this.props.bean,dataBean[2])}</p>
             <div
               style={{
                 display: 'flex',

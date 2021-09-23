@@ -59,7 +59,7 @@ const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin
         isServer: process.env.__IS_SERVER,
         dynamicImport: true,
         rootElement: 'root',
-        defaultTitle: ``,
+        defaultTitle: `RatiryZone`,
       },
     });
     return renderClient(opts);

@@ -7,6 +7,8 @@ export default defineConfig({
 
   // layout: {},
   mfsu: {}, 
+  title: 'RatiryZone',
+  favicon: '/assets/rarity_favicon.ico',
   routes: [
     {
       path: '/',
